@@ -1,1 +1,326 @@
 
+
+function toggleMusic() {
+  const music = document.getElementById("musica");
+  const btn = document.querySelector(".music-btn");
+
+  if (music.paused) {
+    music.play().catch(()=>{});
+    btn.style.animation = "girar 4s linear infinite, pulsoMusica 2s infinite";
+  } else {
+    music.pause();
+    btn.style.animation = "none";
+  }
+}
+// contador
+const fechaEvento = new Date("2026-08-15T16:00:00").getTime();
+
+setInterval(()=>{
+const ahora=new Date().getTime();
+const distancia=fechaEvento-ahora;
+
+if(distancia < 0){
+
+document.querySelector(".countdown").innerHTML = `
+<h2 style="font-family:'Great Vibes'; font-size:40px;">
+🎉 ¡HOY ES EL GRAN DÍA! 🎉
+</h2>
+<p style="margin-top:10px; font-size:18px;">
+Gracias por acompañarme 💜
+</p>
+`;
+
+return;
+}
+
+const dias=Math.floor(distancia/(1000*60*60*24));
+const horas=Math.floor((distancia%(1000*60*60*24))/(1000*60*60));
+const minutos=Math.floor((distancia%(1000*60*60))/(1000*60));
+const segundos=Math.floor((distancia%(1000*60))/1000);
+
+actualizarFlip("dias",dias);
+actualizarFlip("horas",horas);
+actualizarFlip("minutos",minutos);
+actualizarFlip("segundos",segundos);
+
+},1000);
+
+function actualizarFlip(id,valor){
+const el=document.getElementById(id);
+
+if(el.innerText!=valor){
+el.style.animation="none";
+void el.offsetWidth;
+el.style.animation="flipAnim .7s";
+el.innerText=valor;
+}
+}
+
+// secciones y timeline animado
+const sections = document.querySelectorAll(".section");
+const timelineSection = document.querySelector(".timeline").parentElement;
+const timelineItems = document.querySelectorAll(".timeline-item");
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      observer.unobserve(entry.target);
+
+      if(entry.target === timelineSection){
+
+        document.querySelector(".timeline").classList.add("animate");
+
+        timelineItems.forEach((item,index)=>{
+          setTimeout(()=>{
+            item.classList.add("show");
+          }, index*600);
+        });
+
+      }
+
+    }
+
+  });
+}, {threshold:0.15});
+
+sections.forEach(sec => observer.observe(sec));
+// acordeón
+// acordeón
+const acc = document.querySelectorAll(".accordion");
+
+acc.forEach(btn => {
+  btn.addEventListener("click", function(){
+    const panel = this.nextElementSibling;
+    panel.classList.toggle("open");
+  });
+});
+    
+document.getElementById("confirmacionForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let nombre=document.getElementById("nombre").value;
+let personas=document.getElementById("personas").value;
+let mensaje=document.getElementById("mensaje").value;
+
+let texto="🎉 Confirmación de Asistencia 🎉%0A%0A"+
+"Nombre: "+nombre+"%0A"+
+"Personas: "+personas+"%0A"+
+"Mensaje: "+mensaje+"%0A%0A"+
+"Enviado desde la invitación digital";
+
+let telefono="5213341024243";
+
+let url="https://wa.me/"+telefono+"?text="+texto;
+
+alert("Se abrirá WhatsApp para enviar tu confirmación 😊");
+
+window.open(url,"_blank");
+
+this.reset();
+
+});
+
+
+const preguntas = [
+  {
+    pregunta: "¿Cuál es el color favorito de María?",
+    opciones: ["Azul", "Rosa", "Plata", "Morado"],
+    correcta: 2
+  },
+  {
+    pregunta: "¿Quién es el artista favorito de María?",
+    opciones: ["Bad Bunny", "Taylor Swift", "Shakira", "Ed Sheeran"],
+    correcta: 1
+  },
+  {
+    pregunta: "¿Cuál es la serie favorita de María?",
+    opciones: ["Stranger Things", "The Witcher", "Friends", "Gossip Girl"],
+    correcta: 3
+  },
+  {
+    pregunta: "¿Cuál es el deporte que más le gusta a María?",
+    opciones: ["Fútbol", "Natación", "Tenis", "Básquetbol"],
+    correcta: 1
+  },
+  {
+    pregunta: "¿Cuál es la comida favorita de María?",
+    opciones: ["Pizza", "Sushi", "Tacos", "Pasta"],
+    correcta: 3
+  }
+];
+
+let indice = 0;
+let puntaje = 0;
+
+function mostrarPregunta() {
+  const p = preguntas[indice];
+  document.getElementById("pregunta").innerHTML = `<h3>${p.pregunta}</h3>`;
+
+  const opcionesDiv = document.getElementById("opciones");
+  opcionesDiv.innerHTML = "";
+
+  p.opciones.forEach((op, i) => {
+    const btn = document.createElement("button");
+    btn.classList.add("btn");
+    btn.style.margin = "5px";
+    btn.innerText = op;
+    btn.onclick = () => seleccionarOpcion(i);
+    opcionesDiv.appendChild(btn);
+  });
+}
+
+function seleccionarOpcion(i) {
+  const correcto = preguntas[indice].correcta;
+  const resultadoDiv = document.getElementById("resultado");
+  if (i === correcto) {
+    puntaje++;
+    resultadoDiv.innerHTML = "✅ ¡Correcto!";
+  } else {
+    resultadoDiv.innerHTML = `❌ Incorrecto. La respuesta correcta era "${preguntas[indice].opciones[correcto]}"`;
+  }
+
+  const btnSig = document.getElementById("siguiente");
+btnSig.style.display = "inline-block";
+btnSig.style.animation = "aparecerBoton .4s ease";
+  document.getElementById("opciones").querySelectorAll("button").forEach(b => b.disabled = true);
+}
+
+document.getElementById("siguiente").addEventListener("click", () => {
+  indice++;
+  document.getElementById("resultado").innerHTML = "";
+  document.getElementById("siguiente").style.display = "none";
+
+  if (indice < preguntas.length) {
+    mostrarPregunta();
+  } else {
+    document.getElementById("pregunta").innerHTML = `<h3>¡Terminaste la trivia! 🎉</h3>`;
+    document.getElementById("opciones").innerHTML = `Puntaje: ${puntaje} de ${preguntas.length}`;
+  }
+});
+
+// Iniciar la trivia
+mostrarPregunta();
+
+
+function abrirInvitacion() {
+  document.getElementById("intro").style.display = "none";
+  document.querySelector(".music-btn").style.display = "block";
+
+  const music = document.getElementById("musica");
+
+  // Intentamos reproducir la música
+  music.play().catch(err => {
+    console.log("Autoplay bloqueado:", err);
+  });
+
+  // Animación del botón de música
+  document.querySelector(".music-btn").style.animation = "girar 4s linear infinite, pulsoMusica 2s infinite";
+}
+
+
+
+const canvas = document.getElementById("polvo");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let particulas = [];
+
+for(let i=0;i<40;i++){
+particulas.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2+1,
+vy:Math.random()*0.5+0.2,
+alpha:Math.random()
+});
+}
+
+function animarPolvo(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particulas.forEach(p=>{
+p.y -= p.vy;
+
+if(p.y < 0){
+p.y = canvas.height;
+p.x = Math.random()*canvas.width;
+}
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fillStyle = "rgba(" + getComputedStyle(document.documentElement).getPropertyValue('--color3-rgba') + "," + p.alpha + ")";
+ctx.fill();
+});
+
+requestAnimationFrame(animarPolvo);
+}
+
+animarPolvo();
+
+const params = new URLSearchParams(window.location.search);
+const invitado = params.get("invitado");
+
+if (invitado) {
+  // Intro
+  document.getElementById("nombre-invitado").innerHTML =
+    "¡Bienvenido, <b>" + invitado + "</b>!";
+
+  // Agradecimiento al final
+  document.getElementById("agradecimiento").innerHTML =
+    "Tu presencia hará este día aún más especial <b>" + invitado + "</b>";
+}
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<script>
+// 🔗 LINK SUBIDA (Dropbox)
+const linkSubida = "https://www.dropbox.com/request/IJF8H3t10XeBY80guJU3";
+
+// 🔗 LINK FOTOS
+const linkFotos = "https://www.dropbox.com/scl/fo/s8xy77ba3lwlq6b5atdkd/AOELaoD-kWLeQcx0IzXQG_w?rlkey=bg2gubkzd3igu2ji3j5d8lqrw&st=reg1h3g9&dl=0";
+
+// 🔐 CONTRASEÑA
+const passwordFotos = "maria2026";
+
+// GENERAR QR
+new QRious({
+  element: document.getElementById("qrUpload"),
+  value: linkSubida,
+  size: 180
+});
+
+// POPUP
+function abrirFotos(){
+  document.getElementById("popupFotos").style.display="flex";
+  document.getElementById("errorFotos").style.display="none"; // reset
+  document.getElementById("passFotos").value = ""; // limpia input
+}
+
+function cerrarFotos(){
+  document.getElementById("popupFotos").style.display="none";
+}
+
+function verificarFotos(){
+  const pass = document.getElementById("passFotos").value;
+
+  if(pass === passwordFotos){
+    window.open(linkFotos, "_blank");
+    cerrarFotos();
+  }else{
+    document.getElementById("errorFotos").style.display="block";
+  }
+}
+
