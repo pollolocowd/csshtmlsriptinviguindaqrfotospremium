@@ -58,7 +58,10 @@ el.innerText=valor;
 
 // secciones y timeline animado
 const sections = document.querySelectorAll(".section");
-const timelineSection = document.querySelector(".timeline").parentElement;
+
+const timeline = document.querySelector(".timeline");
+const timelineSection = timeline ? timeline.parentElement : null;
+
 const timelineItems = document.querySelectorAll(".timeline-item");
 
 const observer = new IntersectionObserver((entries) => {
@@ -68,7 +71,7 @@ const observer = new IntersectionObserver((entries) => {
       entry.target.classList.add("show");
       observer.unobserve(entry.target);
 
-      if(entry.target === timelineSection){
+      if(timelineSection && entry.target === timelineSection){
 
         document.querySelector(".timeline").classList.add("animate");
 
