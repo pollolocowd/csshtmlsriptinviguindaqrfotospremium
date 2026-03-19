@@ -585,6 +585,20 @@ box-shadow:
   border-color: var(--color3);
   box-shadow:0 0 15px rgba(var(--color3-rgba),0.8);
 }
+
+button, .btn, .accordion {
+outline: none;
+-webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+.btn:focus,
+.accordion:focus {
+outline: none;
+box-shadow: 0 0 10px var(--color3);
+}
+
+
 .sobre-card {
   position: relative;
   padding-top: 140px; /* más espacio arriba para el sobre flotante */
@@ -647,14 +661,3 @@ box-shadow:
 }
 
 
-button, .btn, .accordion {
-outline: none;
--webkit-tap-highlight-color: transparent;
-}
-
-button:focus,
-.btn:focus,
-.accordion:focus {
-outline: none;
-box-shadow: 0 0 10px var(--color3);
-}
