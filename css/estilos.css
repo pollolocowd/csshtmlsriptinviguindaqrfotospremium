@@ -645,3 +645,16 @@ box-shadow:
   transform: scale(1.5);
   color: var(--color3);
 }
+
+
+button, .btn, .accordion {
+outline: none;
+-webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+.btn:focus,
+.accordion:focus {
+outline: none;
+box-shadow: 0 0 10px var(--color3);
+}
