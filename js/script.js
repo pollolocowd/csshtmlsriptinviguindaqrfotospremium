@@ -281,11 +281,7 @@ if (invitado) {
     "Tu presencia hará este día aún más especial <b>" + invitado + "</b>";
 }
 
-</script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-
-<script>
 // 🔗 LINK SUBIDA (Dropbox)
 const linkSubida = "https://www.dropbox.com/request/IJF8H3t10XeBY80guJU3";
 
