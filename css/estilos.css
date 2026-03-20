@@ -271,9 +271,10 @@ color:transparent;
 animation:shine 5s linear infinite;
 }
 
-@keyframes shine{
-0%{background-position:0%;}
-100%{background-position:200%;}
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .btn{
@@ -438,14 +439,24 @@ h1 {
 }
 
 /* Subtítulos */
-h2{
-font-family:'Cinzel', serif;
-font-size:26px;
-margin-bottom:15px;
-color:#d4af37;
-text-shadow:
-0 0 5px rgba(212,175,55,.6),
-0 0 10px rgba(212,175,55,.4);
+h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  margin-bottom: 15px;
+
+  color: transparent;
+  background: linear-gradient(120deg,
+    #d4af37 0%,    /* dorado medio */
+    #fff8dc 25%,   /* beige dorado claro */
+    #ffd700 50%,   /* oro brillante */
+    #fff8dc 75%,
+    #d4af37 100%
+  );
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shine 5s linear infinite;
 }
 
 /* Párrafos y texto normal */
